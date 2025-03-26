@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+torch
+einops
+numpy
+pillow
+pytorch-lightning
+opencv-python

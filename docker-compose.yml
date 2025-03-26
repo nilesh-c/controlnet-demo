@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  controlnet-demo-api:
+    build: .
+    container_name: controlnet-demo-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./models:/app/models
+      - ./test_imgs:/app/test_imgs
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
