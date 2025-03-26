@@ -55,7 +55,19 @@ def take_luminance_from_first_chroma_from_second(luminance, chroma, mode="lab", 
             )
         )
 
+"""
+A class to generate synthetic images using the ControlNet model, based on an input image and text prompts. 
+The generated image is be conditioned on an edge map created using the Canny detector and various hyperparameters.
+"""
 class ControlNetImageGenerator:
+    """
+    Initializes the ControlNet image generator.
+
+    Parameters:
+        config_path (str): Path to the configuration file for the ControlNet model.
+        weights_path (str): Path to the pre-trained model weights.
+        device (str): The device to run the model on, either "cuda" for GPU or "cpu" for CPU.
+    """
     def __init__(self, config_path="./models/cldm_v15.yaml", weights_path="./models/control_sd15_canny.pth", device="cuda"):
         self.apply_canny = CannyDetector()
         self.model = create_model(config_path).cpu()
@@ -64,11 +76,37 @@ class ControlNetImageGenerator:
         self.ddim_sampler = DDIMSampler(self.model)
         self.device = device
 
+    """
+    Generates synthetic images from an input image using the ControlNet model and provided text prompts.
+
+    The process involves creating an edge map from the input image, conditioning the model on this edge map 
+    and the provided prompts, and using DDIM sampling to generate the image.
+
+    Parameters:
+        input_image (np.ndarray): The input image to be used for image generation.
+        prompt (str): The main prompt that guides the image generation.
+        a_prompt (str): Additional positive prompt that further refines the generation.
+        n_prompt (str): Negative prompt that discourages undesirable features in the generated image.
+        num_samples (int, optional): The number of images to generate. Default is 1.
+        image_resolution (int, optional): The resolution of the input image after resizing. Default is 512.
+        ddim_steps (int, optional): Number of steps to use in the DDIM sampler. Default is 10.
+        guess_mode (bool, optional): If True, the model uses guess mode for more aggressive control. Default is False.
+        strength (float, optional): Strength of control over the generated image. Default is 1.0.
+        scale (float, optional): The scale of unconditional guidance. Default is 9.0.
+        seed (int, optional): The random seed for reproducibility. Default is -1 (random seed).
+        eta (float, optional): A parameter controlling the randomness of the sampling. Default is 0.0.
+        low_threshold (int, optional): Low threshold for Canny edge detection. Default is 50.
+        high_threshold (int, optional): High threshold for Canny edge detection. Default is 100.
+        apply_luminance (bool, optional): If True, applies luminance adjustment based on the original image. Default is True.
+
+    Returns:
+        List[np.ndarray]: A list of generated images. The first element is the inverted edge map, followed by the generated images.
+    """
     def generate_image(self, input_image: np.ndarray, prompt: str, a_prompt: str, n_prompt: str, 
                        num_samples: int = 1, image_resolution: int = 512, ddim_steps: int = 10, 
                        guess_mode: bool = False, strength: float = 1.0, scale: float = 9.0, 
                        seed: int = -1, eta: float = 0.0, low_threshold: int = 50, high_threshold: int = 100,
-                       apply_luminance: bool = False):
+                       apply_luminance: bool = True):
         with torch.no_grad():
             img = resize_image(HWC3(input_image), image_resolution)
             H, W, C = img.shape
