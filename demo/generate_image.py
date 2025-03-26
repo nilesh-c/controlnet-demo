@@ -1,13 +1,13 @@
 import imageio
-from model import BrainMRIImageGenerator
+from model import ControlNetImageGenerator
 
 import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
-    print("Initializing BrainMRIImageGenerator...")
+    print("Initializing ControlNetImageGenerator...")
 
     # Initialize model
-    generator = BrainMRIImageGenerator()
+    generator = ControlNetImageGenerator()
 
     # Load original image to get edge map
     input_image_path = "test_imgs/mri_brain.jpg"

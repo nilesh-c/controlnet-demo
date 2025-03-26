@@ -55,7 +55,7 @@ def take_luminance_from_first_chroma_from_second(luminance, chroma, mode="lab", 
             )
         )
 
-class BrainMRIImageGenerator:
+class ControlNetImageGenerator:
     def __init__(self, config_path="./models/cldm_v15.yaml", weights_path="./models/control_sd15_canny.pth", device="cuda"):
         self.apply_canny = CannyDetector()
         self.model = create_model(config_path).cpu()

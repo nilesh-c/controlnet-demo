@@ -4,10 +4,10 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import Response
 from PIL import Image
-from model import BrainMRIImageGenerator
+from model import ControlNetImageGenerator
 
 app = FastAPI()
-generator = BrainMRIImageGenerator()
+generator = ControlNetImageGenerator()
 
 def process_and_generate_image(file: UploadFile, prompt: str, a_prompt: str, n_prompt: str):
     # Read image from the uploaded file
