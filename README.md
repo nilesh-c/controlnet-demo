@@ -47,8 +47,8 @@ Before using this project, you need:
 Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/nilesh-c/controlnet-demo-api.git
-cd controlnet-demo-api
+git clone https://github.com/nilesh-c/controlnet-demo.git
+cd controlnet-demo
 ```
 
 ### Step 2: Download Model Weights
@@ -87,7 +87,7 @@ Alternatively, you can manually download the model and place it in the `models/`
    Once all dependencies are installed, start the FastAPI app by running:
 
    ```bash
-   uvicorn demo.app:app --host 0.0.0.0 --port 8000
+   PYTHONPATH="./ControlNet:$PYTHONPATH" python demo/app.py
    ```
 
    This will start the application at `http://localhost:8000`. You can test the API using the provided Jupyter notebook (`test_client.ipynb`) or make HTTP requests directly.
@@ -97,13 +97,13 @@ Alternatively, you can manually download the model and place it in the `models/`
 1. **Build the Docker image** using Docker Compose:
 
    ```bash
-   docker-compose build
+   docker compose build
    ```
 
 2. **Start the container** with the following command:
 
    ```bash
-   docker-compose up
+   docker compose up
    ```
 
    This will start the FastAPI application in a Docker container. The API will be accessible on port `8000`.
